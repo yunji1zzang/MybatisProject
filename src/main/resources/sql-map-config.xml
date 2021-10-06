@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- Properties 파일 설정 -->
+	<!-- properties 엘리먼트는 XML 설정에서 사용할 프로퍼티를 선언하거나 외부 프로퍼티 파일을
+	          참조할 때 사용한다. 이렇게 선언된 프로퍼티는 "${프로퍼티 이름}"으로 참조하여 사용할 수 있다. -->
+	<properties resource="db.properties" />
+	
+	<!-- typeAliases 엘리먼트는 typeAlias를 여러 개 가질 수 있으며, typeAlias 엘리먼트를 이용하여
+	          특정 클래스의 별칭(Alias)을 선언할 수 있다. 이 Alias는 SQL 명령어들이 저장되는 Sql Mapper에서
+	          사용할 수 있으며, 이를 통해서 Sql Mapping 파일의 크기를 줄여주기도 하고, 설정을 간단히
+	          처리할 수 있도 있다. 현재는 BoardVO 클래스에 대한 Alias만 board로 설정한 상태이다. -->
+	<!-- Alias 설정 -->
+	<typeAliases>
+		<typeAlias alias="board" type="com.springbook.biz.board.BoardVO" />
+	</typeAliases>
+	
+	<!-- Mybatis는 특정 DBMS로부터 커넥션을 획득하고 DB 연동을 처리하기 위해서 반드시
+	     DataSource 정보가 필요하다. environments 엘리먼트에는 다양한 설정을 추가할 수 있지만,
+	          지금은 가장 중요한 DataSource 설정만 작성하였고, H2 데이터베이스 연동을 위한 설정으로 수정했다.-->
+	<!-- DataSource 설정 -->
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+        <!-- https://mybatis.org/mybatis-3/ko/configuration.html -->
+        <!-- POOLED - DataSource에 풀링이 적용된 JDBC 커넥션을 위한 구현체이다.
+                          이는 새로운 Connection 인스턴스를 생성하기 위해 매번 초기화하는 것을 피하게 해준다.
+                          그래서 빠른 응답을 요구하는 웹 애플리케이션에서는 가장 흔히 사용되고 있다. -->			
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driverClassName}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- 마지막으로 mappers 엘리먼트는 여러 mapper를 가질 수 있으며, 이 mapper를 이용하여
+	     SQL 명령어들이 저장된 SQL 파일들을 등록할 수 있다. -->
+	<!-- Sql Mapper 설정 -->
+	<mappers>
+		<mapper resource="mappings/board-mapping.xml" />
+	</mappers>
+	
+</configuration>
